@@ -1,5 +1,6 @@
 package com.reachout.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,5 +17,9 @@ public class Role {
 
     @Column(length = 60)
     private String name;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "roles")
+    private User user;
 }
 
