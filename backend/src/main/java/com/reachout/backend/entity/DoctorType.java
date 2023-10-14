@@ -1,5 +1,6 @@
 package com.reachout.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.reachout.backend.entity.Doctor;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class DoctorType {
 
     private String name;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "doctorType")
     private Doctor doctor;
 }

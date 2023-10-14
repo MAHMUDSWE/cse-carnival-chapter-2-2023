@@ -1,5 +1,6 @@
 package com.reachout.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,10 +20,12 @@ public class District {
 
     private String name;
 
-    @OneToOne(mappedBy = "district")
-    private Address address;
-
+    @JsonIgnore
     @OneToOne(mappedBy = "district")
     private Doctor doctor;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "district")
+    private User user;
 
 }
