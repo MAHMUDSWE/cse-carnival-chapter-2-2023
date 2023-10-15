@@ -20,14 +20,14 @@ import javax.print.Doc;
 public class DoctorController {
 
     private final DoctorService doctorService;
-    @PostMapping
-    public ResponseEntity<Doctor> addDoctor(@RequestBody Doctor doctor) {
-
-        System.out.println("in controller: doctor add: " + doctor);
-        Doctor newDoctor = doctorService.addDoctor(doctor);
-
-        return new ResponseEntity< >(doctor, HttpStatus.CREATED);
-    }
+//    @PostMapping("/register")
+//    public ResponseEntity<Doctor> addDoctor(@RequestBody Doctor doctor) {
+//
+//        System.out.println("in controller: doctor add: " + doctor);
+//        Doctor newDoctor = doctorService.addDoctor(doctor);
+//
+//        return new ResponseEntity< >(doctor, HttpStatus.CREATED);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<DoctorProfile> getUserProfile(@PathVariable(value = "id")

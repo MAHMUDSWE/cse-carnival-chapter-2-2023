@@ -20,15 +20,17 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
 
+    private static final String[] WHITE_LIST_URL = {"/api/auth/**"};
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeHttpRequests()
-                .requestMatchers("/api/auth/**", "/api/public/**", "/api/users/register")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
+                .authorizeHttpRequests(req ->
+                        req.requestMatchers(WHITE_LIST_URL)
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
+                        )
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
