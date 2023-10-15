@@ -13,7 +13,7 @@ export default function DoctorSignupPage() {
     const [signupError, setSignupError] = useState(null);
 
     const loginMutation = useMutation({
-        mutationFn: AuthService.signup,
+        mutationFn: AuthService.doctorSignup,
         onMutate: () => {
 
         },

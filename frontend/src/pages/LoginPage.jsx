@@ -8,7 +8,7 @@ import LoginForm from '../components/form/LoginForm';
 import { AuthService } from '../services/auth.service';
 import { AuthContext } from '../contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { storeAccessToken } from '../utils/token.util';
+import { setUserRole, storeAccessToken } from '../utils/token.util';
 import { toast } from 'react-toastify';
 import JoinAsDoctor from '../components/auth/JoinAsDoctor';
 
@@ -24,9 +24,10 @@ export default function LoginPage() {
 
     onSuccess: (data) => {
       storeAccessToken(data.access_token);
+      setUserRole("patient");
       setIsLoggedIn(!!data.access_token);
       toast.success("Login successful! Welcome back.");
-      navigate("/home");
+      navigate("/patient-homepage");
     },
     onError: (data) => {
       if (data.response.status == 503) {

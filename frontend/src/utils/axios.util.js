@@ -3,7 +3,14 @@ import apiEndpoint from './endpoint.util';
 import { getAccessToken } from './token.util';
 
 const axiosInstance = axios.create({
-    baseURL: apiEndpoint.base,
+    baseURL: "http://localhost:8080/api",
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
+
+export const axiosInstance2 = axios.create({
+    baseURL: "http://localhost:8080/api",
     headers: {
         'Content-Type': 'application/json',
     },
