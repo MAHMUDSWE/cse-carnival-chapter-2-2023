@@ -29,8 +29,8 @@ export default function DoctorSignupForm({ onSubmit, signupError, setSignupError
         if (validationError) {
             setSignupError(validationError);
         } else {
-            console.log(inputs);
-            // onSubmit(inputs);
+            // console.log(inputs);
+            onSubmit(inputs);
         }
     };
 
