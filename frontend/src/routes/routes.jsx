@@ -9,6 +9,8 @@ import { LoggedInMode, LoggedOutMode } from "./protectedRoutes";
 import PatientHomepage from "../pages/PatientHomePage";
 import PatientDashboard from "../pages/PatientDashboard";
 import { DoctorDashboard } from "../pages/DoctorDashboard";
+import RecoverPassword from "../pages/RecoverPassword";
+import AdminDashboard from "../pages/AdminDashboard";
 
 
 function PageRoutes() {
@@ -37,6 +39,16 @@ function PageRoutes() {
 
                     <Route path="/login" element={<LoggedOutMode>
                         <LoginPage />
+                    </LoggedOutMode>
+                    } />
+
+                    <Route path="/recover" element={<LoggedOutMode>
+                        <RecoverPassword />
+                    </LoggedOutMode>
+                    } />
+
+                    <Route path="/admin-dashboard" element={<LoggedOutMode>
+                        <AdminDashboard />
                     </LoggedOutMode>
                     } />
 
