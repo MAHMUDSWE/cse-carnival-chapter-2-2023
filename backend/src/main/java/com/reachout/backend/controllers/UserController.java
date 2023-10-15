@@ -29,14 +29,6 @@ public class UserController {
 //        return new ResponseEntity< >(newUser, HttpStatus.CREATED);
 //    }
 
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegistrationDtoUser registrationDtoUser)
-            throws Exception {
-        System.out.println("Registration Req: " + registrationDtoUser);
-        AuthenticationResponse response = authenticationService.register(registrationDtoUser);
-        System.out.println("registration response : " + response);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
 
 
     @GetMapping("/{id}")
