@@ -19,7 +19,6 @@ const scheduledAppointmentsData = [
         date: '2023-10-16',
         time: '02:30 PM',
     },
-    // Add more scheduled appointments
 ];
 
 const pastAppointmentsData = [
@@ -37,23 +36,20 @@ const pastAppointmentsData = [
         date: '2023-10-12',
         time: '03:15 PM',
     },
-    // Add more past appointments
 ];
 
 const DoctorInformation = () => {
-    // Mock doctor profile data
     const doctorData = {
         name: "Dr. John Doe",
         specialty: "Cardiologist",
         email: "johndoe@example.com",
-        isVerified: true, // Set to true for verified, false for unverified
-        profileImage: "https://source.unsplash.com/200x200/?portrait" || "https://example.com/doctor-profile-image.jpg", // Replace with actual image URL
+        isVerified: true, 
+        profileImage: "https://source.unsplash.com/200x200/?portrait" || "https://example.com/doctor-profile-image.jpg",
     };
 
     return (
         <>
             <div className="w-1/2 mx-auto p-4">
-                {/* <h1 className="text-3xl font-semibold mb-4">Doctor Information</h1> */}
                 <div className="text-center">
                     <img
                         src={doctorData.profileImage}
