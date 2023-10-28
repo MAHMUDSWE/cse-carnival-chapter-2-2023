@@ -20,8 +20,4 @@ public class DoctorType {
     Long id;
 
     private String name;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "doctorType")
-    private Doctor doctor;
 }

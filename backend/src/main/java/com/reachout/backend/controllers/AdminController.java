@@ -18,13 +18,6 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginDto> login(@RequestBody LoginDto loginDto) {
-        System.out.println("Authentication Req: " + loginDto);
-        //return ResponseEntity.ok(adminService.authenticate(loginDto));
-        return null;
-    }
-
     @GetMapping("/getRegistrationRequests")
     public ResponseEntity<List<Doctor>> getRegistrationRequests() {
         System.out.println("get Doctor Registration Requests");

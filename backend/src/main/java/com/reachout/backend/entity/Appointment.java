@@ -19,7 +19,7 @@ public class Appointment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user; // Foreign Key to Patient Table
+    private Patient user; // Foreign Key to Patient Table
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")

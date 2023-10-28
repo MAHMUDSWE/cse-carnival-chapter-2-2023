@@ -3,10 +3,10 @@ package com.reachout.backend.controllers;
 import com.reachout.backend.entity.Doctor;
 import com.reachout.backend.payload.AuthenticationResponse;
 import com.reachout.backend.payload.LoginDto;
-import com.reachout.backend.payload.RegistrationDtoUser;
+import com.reachout.backend.payload.RegistrationDtoPatient;
+import com.reachout.backend.service.AdminService;
 import com.reachout.backend.service.AuthenticationService;
 import com.reachout.backend.service.DoctorService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +23,7 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
     private final DoctorService doctorService;
+    private final AdminService adminService;
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody LoginDto loginDto) {
@@ -31,24 +32,33 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.authenticate(loginDto));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegistrationDtoUser registrationDtoUser)
+    @PostMapping("/register/patient")
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegistrationDtoPatient registrationDtoUser)
             throws Exception {
         System.out.println("Registration Req: " + registrationDtoUser);
         AuthenticationResponse response = authenticationService.register(registrationDtoUser);
         System.out.println("registration response : " + response);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PostMapping("/register/doctor")
-    public ResponseEntity<Doctor> addDoctor(@RequestBody Doctor doctor) {
+    public ResponseEntity<?> addDoctor(@RequestBody Doctor doctor) throws Exception {
 
         System.out.println("in controller: doctor add: " + doctor);
-        Doctor newDoctor = doctorService.addDoctor(doctor);
+        AuthenticationResponse response = authenticationService.addDoctor(doctor);
 
-        return new ResponseEntity< >(doctor, HttpStatus.CREATED);
-
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+
+    @PostMapping("/admin/login")
+    public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
+        System.out.println("Registration Req: " + loginDto);
+        AuthenticationResponse response = authenticationService.authenticate(loginDto);
+        System.out.println("registration response : " + response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
     @GetMapping("/test")
     public String test() {

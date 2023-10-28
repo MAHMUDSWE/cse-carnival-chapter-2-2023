@@ -1,54 +1,46 @@
 package com.reachout.backend.security;
 
-import com.reachout.backend.ApplicationUser;
+import com.reachout.backend.entity.Admin;
 import com.reachout.backend.entity.Doctor;
-import com.reachout.backend.entity.User;
+import com.reachout.backend.entity.Patient;
+import com.reachout.backend.repository.AdminRepository;
 import com.reachout.backend.repository.DoctorRepository;
-import com.reachout.backend.repository.UserRepository;
+import com.reachout.backend.repository.PatientRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final PatientRepository patientRepository;
     private final DoctorRepository doctorRepository;
-
-    public CustomUserDetailsService(UserRepository userRepository, DoctorRepository doctorRepository) {
-        this.userRepository = userRepository;
-        this.doctorRepository = doctorRepository;
-    }
+    private final AdminRepository adminRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         System.out.println("loadUserByUsername :-> " + username);
 
-        // Check if the user is a doctor
-        Doctor doctor = doctorRepository.findByUsername(username);
-        if(doctor == null) {
-            System.out.println("NOT A DOCTOR");
+        // Check if the user is an admin
+        if (adminRepository.existsByUsername(username)) {
+            Admin admin = adminRepository.findByUsername(username);
+            return new ApplicationUserAdmin(admin);
         }
-        if (doctor != null) {
-            return buildUserDetails(doctor);
+        if (doctorRepository.existsByUsername(username)) {
+            Doctor doctor = doctorRepository.findByUsername(username);
+            return new ApplicationUserDoctor(doctor);
+        } else if (patientRepository.existsByUsername(username)) {
+            Patient patient = patientRepository.findByUsername(username);
+            return new ApplicationUserPatient(patient);
         }
-
-        System.out.println("loadByUserName: " + username);
-
-        // Check if the user is a regular user
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-        return buildUserDetails(user);
-    }
-
-    private UserDetails buildUserDetails(ApplicationUser applicationUser) {
-        return new org.springframework.security.core.userdetails.User(
-                applicationUser.getUsername(),
-                applicationUser.getPassword(),
-                applicationUser.getAuthorities()
-        );
+        throw new UsernameNotFoundException("username does not exists : " +  username);
     }
 }
 

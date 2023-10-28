@@ -1,6 +1,6 @@
 package com.reachout.backend.config;
 
-import com.reachout.backend.repository.UserRepository;
+import com.reachout.backend.repository.PatientRepository;
 import com.reachout.backend.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,29 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserRepository userRepository;
-
-    //another implementation
+    private final PatientRepository patientRepository;
     private final CustomUserDetailsService customUserDetailsService;
-
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return new UserDetailsService() {
-//            @Override
-//            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//                return userRepository.findByUsername(username)
-//                        .orElseThrow(()->new UsernameNotFoundException("User not found"));
-//            }
-//        };
-//    }
-
-//    @Bean
-//    public AuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//        authenticationProvider.setUserDetailsService(userDetailsService());
-//        authenticationProvider.setPasswordEncoder(passwordEncoder());
-//        return authenticationProvider;
-//    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {

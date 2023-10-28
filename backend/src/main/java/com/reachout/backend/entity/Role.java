@@ -17,9 +17,5 @@ public class Role {
 
     @Column(length = 60)
     private String name;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "roles")
-    private User user;
 }
 

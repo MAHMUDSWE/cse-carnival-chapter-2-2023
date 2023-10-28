@@ -1,18 +1,15 @@
 package com.reachout.backend.controllers;
 
 import com.reachout.backend.entity.Doctor;
-import com.reachout.backend.entity.User;
 import com.reachout.backend.payload.ApiResponse;
 import com.reachout.backend.payload.DoctorProfile;
-import com.reachout.backend.payload.UserProfile;
 import com.reachout.backend.service.DoctorService;
-import com.reachout.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/doctors")
@@ -20,14 +17,6 @@ import javax.print.Doc;
 public class DoctorController {
 
     private final DoctorService doctorService;
-//    @PostMapping("/register")
-//    public ResponseEntity<Doctor> addDoctor(@RequestBody Doctor doctor) {
-//
-//        System.out.println("in controller: doctor add: " + doctor);
-//        Doctor newDoctor = doctorService.addDoctor(doctor);
-//
-//        return new ResponseEntity< >(doctor, HttpStatus.CREATED);
-//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<DoctorProfile> getUserProfile(@PathVariable(value = "id")
@@ -54,8 +43,9 @@ public class DoctorController {
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllDoctor() {
+        List<Doctor>  doctors = doctorService.getAllDoctors();
 
-        return null;
+        return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 
 
