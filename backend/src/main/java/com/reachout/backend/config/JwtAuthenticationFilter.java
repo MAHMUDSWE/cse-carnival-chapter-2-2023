@@ -39,6 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         final String username;
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+            System.out.println("no token found / bearer token not in the header");
             filterChain.doFilter(request, response);
             return;
         }
@@ -51,6 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             UserDetails userDetails = this.customUserDetailsService.loadUserByUsername(username);
             if(jwtService.isTokenValid(jwt, userDetails)) {
+                System.out.println("token is valid(JwtAuthenticationFilter)!");
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,

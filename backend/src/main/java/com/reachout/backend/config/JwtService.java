@@ -1,6 +1,10 @@
 package com.reachout.backend.config;
 
-import com.reachout.backend.entity.User;
+import com.reachout.backend.entity.Admin;
+import com.reachout.backend.entity.Patient;
+import com.reachout.backend.security.ApplicationUserAdmin;
+import com.reachout.backend.security.ApplicationUserDoctor;
+import com.reachout.backend.security.ApplicationUserPatient;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -10,6 +14,7 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -47,10 +52,23 @@ public class JwtService {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> extraClaims = new HashMap<>();
-        User user = (User) userDetails;
-        extraClaims.put("id", user.getId());
+
+        if (userDetails instanceof ApplicationUserAdmin) {
+            ApplicationUserAdmin adminUser = (ApplicationUserAdmin) userDetails;
+            extraClaims.put("id", adminUser.getId());
+            // Add other admin-specific claims if needed
+        } else if(userDetails instanceof ApplicationUserDoctor) {
+            ApplicationUserDoctor doctorUser = (ApplicationUserDoctor) userDetails;
+            extraClaims.put("id", doctorUser.getId());
+            // Add other doctor-specific claims if needed
+        } else if(userDetails instanceof ApplicationUserPatient) {
+            ApplicationUserPatient patientUser = (ApplicationUserPatient) userDetails;
+            extraClaims.put("id", patientUser.getId());
+            // Add other patient-specific claims if needed
+        }
         return generateToken(extraClaims, userDetails);
     }
+
 
     //call buildToken method to generate jwt access token
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
@@ -81,8 +99,32 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
     public Boolean isTokenValid(String token, UserDetails userDetails) {
+
+        System.out.println("Token validating!");
         String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token) && validateToken(token);
+
+        System.out.println("UserDetails class: " + userDetails.getClass().getName());
+
+        if (userDetails instanceof ApplicationUserPatient) {
+            System.out.println("User token found!");
+            ApplicationUserPatient patient = (ApplicationUserPatient) userDetails;
+            return username.equals(patient.getUsername()) && !isTokenExpired(token) && validateToken(token);
+        } else if (userDetails instanceof ApplicationUserAdmin) {
+            System.out.println("Admin token found!");
+            ApplicationUserAdmin admin = (ApplicationUserAdmin) userDetails;
+            // Adjust this according to how you store usernames for admins
+            System.out.println(username.equals(admin.getUsername()) && !isTokenExpired(token) && validateToken(token));
+            return username.equals(admin.getUsername()) && !isTokenExpired(token) && validateToken(token);
+        } else if(userDetails instanceof ApplicationUserDoctor) {
+            System.out.println("doctor token found!");
+            ApplicationUserDoctor doctor = (ApplicationUserDoctor) userDetails;
+            // Adjust this according to how you store usernames for admins
+            return username.equals(doctor.getUsername()) && !isTokenExpired(token) && validateToken(token);
+        }else {
+            System.out.println("Unknown user type!");
+            // Handle other user types if necessary
+            return true;
+        }
     }
 
     private boolean isTokenExpired(String token) {

@@ -1,6 +1,6 @@
 package com.reachout.backend.entity;
 
-import com.reachout.backend.ApplicationUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.reachout.backend.entity.District;
 import com.reachout.backend.entity.Thana;
 import jakarta.persistence.*;
@@ -16,7 +16,8 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Doctor extends ApplicationUser {
+@Table(name = "doctors")
+public class Doctor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,14 +30,6 @@ public class Doctor extends ApplicationUser {
     private Date dob;
     private String gender;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "district_id")  // Name of the foreign key column in the Doctor table
-    private District district;
-
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "thana_id")  // Name of the foreign key column in the Doctor table
-    private Thana thana;
 
     private String nationId;
     private String bmdc;
@@ -48,46 +41,20 @@ public class Doctor extends ApplicationUser {
     private String email;
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_id")  // Name of the foreign key column in the User table
-    private Role role;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "district_id")
+    private District district;
+
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)  // Many users can belong to one thana
+    @JoinColumn(name = "thana_id")
+    private Thana thana;
 
     private Boolean isApproved;
 
-    @Override
-    protected Collection<? extends GrantedAuthority> mapRolesToAuthority() {
-        // Assuming a doctor has only one role
-        Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority(role.getName())); // Assuming roles is a field in your Doctor class
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")  // Name of the foreign key column in the Patient table
+    private Role role;
 
-        return authorities;
-    }
-
-    @Override
-    @Transient
-    public Set<Role> getRoles() {
-        // Assuming a doctor has only one role
-        return Collections.singleton(role);
-    }
-
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
 }

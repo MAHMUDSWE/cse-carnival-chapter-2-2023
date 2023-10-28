@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @Builder
@@ -19,12 +21,4 @@ public class Thana {
     private Long id;
 
     private String name;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "thana")
-    private Doctor doctor;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "thana")
-    private User user;
 }

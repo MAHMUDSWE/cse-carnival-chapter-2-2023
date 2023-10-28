@@ -1,33 +1,30 @@
 package com.reachout.backend.service.impl;
 
+import com.reachout.backend.entity.Patient;
 import com.reachout.backend.entity.Role;
-import com.reachout.backend.entity.User;
 import com.reachout.backend.exception.BadRequestException;
 import com.reachout.backend.exception.ResourceNotFoundException;
 import com.reachout.backend.payload.ApiResponse;
-import com.reachout.backend.payload.UserProfile;
-import com.reachout.backend.repository.UserRepository;
-import com.reachout.backend.service.UserService;
+import com.reachout.backend.payload.PatientProfile;
+import com.reachout.backend.repository.PatientRepository;
+import com.reachout.backend.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class PatientServiceImpl implements PatientService {
 
-    private final UserRepository userRepository;
+    private final PatientRepository patientRepository;
 
     @Override
-    public User addUser(User user) {
-        System.out.println("user creation req service: " + user);
-            if (userRepository.existsByUsername(user.getUsername())) {
+    public Patient addPatient(Patient patient) {
+        System.out.println("user creation req service: " + patient);
+            if (patientRepository.existsByUsername(patient.getUsername())) {
                 System.out.println("username not available");
                 ApiResponse apiResponse =  ApiResponse.builder()
                         .timeStamp(LocalDateTime.now().toString())
@@ -39,7 +36,7 @@ public class UserServiceImpl implements UserService {
                 throw new BadRequestException(apiResponse);
             }
 
-            if (userRepository.existsByEmail(user.getEmail())) {
+            if (patientRepository.existsByEmail(patient.getEmail())) {
                 System.out.println("email not available");
                 ApiResponse apiResponse =  ApiResponse.builder()
                         .timeStamp(LocalDateTime.now().toString())
@@ -51,47 +48,47 @@ public class UserServiceImpl implements UserService {
                 throw new BadRequestException(apiResponse);
             }
 
-           Role userRole = new Role();
-            userRole.setName("USER");
+           Role patientRole = new Role();
+            patientRole.setName("PATIENT");
             //x
-            user.setRoles(userRole);
+            patient.setRole(patientRole);
 
             //user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        return patientRepository.save(patient);
     }
 
     //dto introduce
     @Override
-    public UserProfile getUserProfile(Long id) {
+    public PatientProfile getPatientProfile(Long id) {
 
-        Optional<User> optionalUser = userRepository.findById(id);
+        Optional<Patient> optionalPatient = patientRepository.findById(id);
 
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+        if (optionalPatient.isPresent()) {
+            Patient patient = optionalPatient.get();
 
-            UserProfile.UserProfileBuilder userProfileBuilder = UserProfile.builder()
-                    .name(user.getName())
-                    .username(user.getUsername())
-                    .dob(user.getDob())
-                    .gender(user.getGender())
-                    .phoneNumber(user.getPhoneNumber())
-                    .isEnabled(user.isEnabled())
-                    .email(user.getEmail());
+            PatientProfile.PatientProfileBuilder patientProfileBuilder = PatientProfile.builder()
+                    .name(patient.getName())
+                    .username(patient.getUsername())
+                    .dob(patient.getDob())
+                    .gender(patient.getGender())
+                    .phoneNumber(patient.getPhoneNumber())
+                    .isEnabled(patient.isEnabled())
+                    .email(patient.getEmail());
 
             // Check if Thana is not null, then include it in the UserProfile
-            if (user.getThana() != null) {
-                userProfileBuilder.thana(user.getThana().getName());
+            if (patient.getThana() != null) {
+                patientProfileBuilder.thana(patient.getThana().getName());
             } else {
-                userProfileBuilder.thana("Thana not specified"); // Or any default value you want
+                patientProfileBuilder.thana("Thana not specified"); // Or any default value you want
             }
 
             // Check if District is not null, then include it in the UserProfile
-            if (user.getDistrict() != null) {
-                userProfileBuilder.district(user.getDistrict().getName());
+            if (patient.getDistrict() != null) {
+                patientProfileBuilder.district(patient.getDistrict().getName());
             } else {
-                userProfileBuilder.district("District not specified"); // Or any default value you want
+                patientProfileBuilder.district("District not specified"); // Or any default value you want
             }
-            return userProfileBuilder.build();
+            return patientProfileBuilder.build();
 
         } else {
             System.out.println("getUserProfile: user does not exists " + id);
@@ -107,11 +104,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ApiResponse deleteUser(Long id) {
-        User user = userRepository.findById(id)
+    public ApiResponse deletePatient(Long id) {
+        Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
 
-        userRepository.deleteById(user.getId());
+        patientRepository.deleteById(patient.getId());
 
         return ApiResponse.builder()
                 .timeStamp(LocalDateTime.now().toString())

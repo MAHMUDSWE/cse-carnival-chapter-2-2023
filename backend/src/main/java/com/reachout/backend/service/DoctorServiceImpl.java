@@ -3,17 +3,16 @@ package com.reachout.backend.service;
 
 import com.reachout.backend.entity.Doctor;
 import com.reachout.backend.entity.Role;
-import com.reachout.backend.entity.User;
 import com.reachout.backend.exception.BadRequestException;
 import com.reachout.backend.payload.ApiResponse;
 import com.reachout.backend.payload.DoctorProfile;
-import com.reachout.backend.payload.UserProfile;
 import com.reachout.backend.repository.DoctorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -101,5 +100,11 @@ public class DoctorServiceImpl implements DoctorService{
     public ApiResponse deleteDoctor(Long id) {
         return null;
     }
+
+    @Override
+    public List<Doctor> getAllDoctors() {
+        return doctorRepository.findAll();
+    }
+
 
 }
