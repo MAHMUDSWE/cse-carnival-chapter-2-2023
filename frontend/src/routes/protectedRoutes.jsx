@@ -4,16 +4,16 @@ import { getAccessToken, getUserRole } from '../utils/token.util';
 
 const LoggedOutMode = ({ children }) => {
     var isLoggedIn = !!getAccessToken();
-    var role = getUserRole();
-    if (isLoggedIn && role == "patient") {
+    // var role = getUserRole();
+    if (isLoggedIn) {
         return <Navigate to="/patient-homepage" replace />;
     }
-    else if (isLoggedIn && role == "doctor") {
-        return <Navigate to="/doctor-dashboard" replace />;
-    }
-    else if (isLoggedIn && role == "admin") {
-        return <Navigate to="/admin-dashboard" replace />;
-    }
+    // else if (isLoggedIn && role == "doctor") {
+    //     return <Navigate to="/doctor-dashboard" replace />;
+    // }
+    // else if (isLoggedIn && role == "admin") {
+    //     return <Navigate to="/admin-dashboard" replace />;
+    // }
     return children;
 }
 

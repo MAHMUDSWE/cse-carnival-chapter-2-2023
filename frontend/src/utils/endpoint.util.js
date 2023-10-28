@@ -1,8 +1,10 @@
 const apiEndpoint = {
     base: import.meta.env.VITE_API,
     auth: {
-        signup: "/user/signup",
-        login: "/user/login",
+        signup: "/auth/register",
+        doctorSignup: "/auth/register/doctor",
+        login: "/auth/authenticate",
+        doctorLogin: ""
     },
 };
 
