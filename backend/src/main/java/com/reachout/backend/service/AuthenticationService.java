@@ -139,6 +139,7 @@ public class AuthenticationService {
         );
 
         Doctor newDoctor = Doctor.builder().
+                title(doctor.getTitle()).
                 firstName(doctor.getFirstName()).
                 lastName(doctor.getLastName()).
                 doctorType(managedDoctorType).
