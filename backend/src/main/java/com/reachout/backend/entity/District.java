@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "district", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class District {
 
     @Id

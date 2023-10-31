@@ -18,6 +18,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -32,6 +35,7 @@ public class AuthenticationService {
     private final DoctorTypeRepository doctorTypeRepository;
     private final DistrictRepository districtRepository;
     private final ThanaRepository thanaRepository;
+    private final DoctorSpecializationRepository  doctorSpecializationRepository;
 
     public AuthenticationResponse authenticate(LoginDto loginDto) {
         System.out.println("Auth Service : authentication : " + loginDto);
@@ -138,10 +142,23 @@ public class AuthenticationService {
                 () -> new Exception("thana not found in DB")
         );
 
+         //Create a set of DoctorSpecialization entities
+        Set<DoctorSpecialization> specializations = new HashSet<>();
+        for (DoctorSpecialization x : doctor.getSpecializations()) {
+            DoctorSpecialization specialization = DoctorSpecialization.builder()
+                    .name(x.getName())
+                    .build();
+            specializations.add(specialization);
+            doctorSpecializationRepository.save(specialization); // Save DoctorSpecialization
+
+        }
+
         Doctor newDoctor = Doctor.builder().
                 title(doctor.getTitle()).
                 firstName(doctor.getFirstName()).
                 lastName(doctor.getLastName()).
+                phoneNumber(doctor.getPhoneNumber()).
+                isApproved(false).
                 doctorType(managedDoctorType).
                 bmdc(doctor.getBmdc()).
                 district(managedDistrict).
@@ -154,10 +171,13 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(doctor.getPassword())).
                 build();
 
+        // Assign the specializations to the newDoctor
+        newDoctor.setSpecializations(specializations);
+
         System.out.println("In auth service : reg doc ->" + doctor);
 
         //assigning to only single role
-        Role role = roleRepository.findByName("DOCTOR").
+        Role role = roleRepository.findByName("ROLE_DOCTOR").
                 orElseThrow(()->new Exception("role DOCTOR cannot be fetched from DB"));
 
         newDoctor.setRole(role);
@@ -171,6 +191,4 @@ public class AuthenticationService {
                 message(HttpStatus.OK.getReasonPhrase()).
                 accessToken(jwtToken).refreshToken(refreshToken).build();
     }
-
-
 }

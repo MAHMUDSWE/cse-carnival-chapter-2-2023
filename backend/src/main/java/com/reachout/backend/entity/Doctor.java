@@ -34,9 +34,11 @@ public class Doctor {
     private String nationId;
     private String bmdc;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    //Many to one uni-directional relationship
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "doctor_type_id")  // Name of the foreign key column in the Doctor table
     private DoctorType doctorType;
+
     private String phoneNumber;
     private String email;
     private String password;
@@ -52,9 +54,16 @@ public class Doctor {
 
     private Boolean isApproved;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")  // Name of the foreign key column in the Patient table
     private Role role;
 
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "doctors_and_specialization", // Name of the association table
+            joinColumns = @JoinColumn(name = "doctor_id"), // Column in the association table for the Doctor entity
+            inverseJoinColumns = @JoinColumn(name = "specialization_id") // Column in the association table for the DoctorSpecialization entity
+    )
+    private Set<DoctorSpecialization> specializations = new HashSet<>();
 }

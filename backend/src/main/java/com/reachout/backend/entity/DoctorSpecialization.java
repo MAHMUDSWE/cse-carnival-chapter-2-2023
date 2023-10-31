@@ -7,19 +7,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Data
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "thana", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
-public class Thana {
+public class DoctorSpecialization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
+
+    @ManyToMany(mappedBy = "specializations")
+    @JsonIgnore // Ignore the 'doctor' property during serialization
+    private Set<Doctor> doctors = new HashSet<>();
 }

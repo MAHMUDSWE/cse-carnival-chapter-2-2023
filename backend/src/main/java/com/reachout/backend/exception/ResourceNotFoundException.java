@@ -1,9 +1,13 @@
 package com.reachout.backend.exception;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
+@Getter
+@Setter
 public class ResourceNotFoundException extends RuntimeException{
     private String resourceName;
     private String fieldName;
@@ -19,17 +23,5 @@ public class ResourceNotFoundException extends RuntimeException{
 
     public ResourceNotFoundException(String resourceNotFound) {
         super(String.format(resourceNotFound));
-    }
-
-    public String getResourceName() {
-        return resourceName;
-    }
-
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public Long getFieldValue() {
-        return fieldValue;
     }
 }

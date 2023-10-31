@@ -137,11 +137,11 @@ public class JwtService {
 
     private boolean validateToken(String token) {
         return true;
- //       try {
+//        try {
 //            Jwts.parser().setSigningKey(getSignInKey()).build().parseClaimsJws(token);
 //            return true;
 //        } catch (SignatureException ex) {
-//            throw new BlogApiException(HttpStatus.BAD_REQUEST, "Invalid JWT sequence");
+//            throw new Exception(HttpStatus.BAD_REQUEST, "Invalid JWT sequence");
 //        } catch (MalformedJwtException ex) {
 //            throw new BlogApiException(HttpStatus.BAD_REQUEST, "Invalid JWT token");
 //        } catch (ExpiredJwtException ex) {
@@ -151,8 +151,6 @@ public class JwtService {
 //        } catch (IllegalArgumentException ex) {
 //            throw new BlogApiException(HttpStatus.BAD_REQUEST, "JWT claims string is empty");
 //        }
-
-
     }
 }
 

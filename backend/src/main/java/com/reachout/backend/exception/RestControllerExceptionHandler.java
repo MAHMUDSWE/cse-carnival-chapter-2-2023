@@ -4,6 +4,8 @@ package com.reachout.backend.exception;
 import com.reachout.backend.payload.ApiResponse;
 import com.reachout.backend.payload.AuthenticationResponse;
 import com.reachout.backend.payload.ErrorDetails;
+import com.reachout.backend.payload.SimpleResponse;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.yaml.snakeyaml.scanner.ScannerImpl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,15 +39,15 @@ public class RestControllerExceptionHandler {
 //        return new ResponseEntity<>(apiResponse, status);
 //    }
 //
-//    @ExceptionHandler(UnauthorizedException.class)
-//    @ResponseBody
-//    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-//    public ResponseEntity<ApiResponse> resolveException(UnauthorizedException exception) {
-//
-//        ApiResponse apiResponse = exception.getApiResponse();
-//
-//        return new ResponseEntity<>(apiResponse, HttpStatus.UNAUTHORIZED);
-//    }
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<SimpleResponse> resolveException(UnauthorizedException exception) {
+
+        SimpleResponse simpleResponse = exception.getSimpleResponse();
+
+        return new ResponseEntity<>(simpleResponse, HttpStatus.UNAUTHORIZED);
+    }
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseBody

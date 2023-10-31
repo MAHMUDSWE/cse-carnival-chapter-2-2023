@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "doctor_type")
+@Table(name = "doctor_type", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class DoctorType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -41,7 +41,7 @@ public class AuthenticationController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PostMapping("/register/doctor")
+    @PostMapping("v2/register/doctor")
     public ResponseEntity<?> addDoctor(@RequestBody Doctor doctor) throws Exception {
 
         System.out.println("in controller: doctor add: " + doctor);

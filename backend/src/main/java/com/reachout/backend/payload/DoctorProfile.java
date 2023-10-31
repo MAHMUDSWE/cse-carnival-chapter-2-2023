@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.Set;
 
 @Builder
 @Data
@@ -32,4 +33,5 @@ public class DoctorProfile {
     private String email;
     private String roles;
     private Boolean isApproved;
+    private Set<String> specialization;
 }
