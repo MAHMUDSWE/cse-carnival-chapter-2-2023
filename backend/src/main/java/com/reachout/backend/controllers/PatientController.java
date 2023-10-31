@@ -6,6 +6,7 @@ import com.reachout.backend.payload.ApiResponse;
 import com.reachout.backend.payload.PatientProfile;
 import com.reachout.backend.service.AuthenticationService;
 import com.reachout.backend.service.PatientService;
+import com.reachout.backend.utils.AppConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,6 @@ public class PatientController {
     //@PreAuthorize("hasRole('Patient') or hasRole('ADMIN')")
     public ResponseEntity<ApiResponse> deletePatient(@PathVariable(value = "id") Long id) {
         ApiResponse apiResponse = patientService.deletePatient(id);
-
         return new ResponseEntity< >(apiResponse, HttpStatus.OK);
     }
 
@@ -43,6 +43,15 @@ public class PatientController {
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllPatient() {
+
+        return null;
+    }
+
+    @GetMapping("/make/appointment")
+    public ResponseEntity<?> getDoctorsForAppointment(@RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NO, required = false) int pageNo,
+                                                      @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+                                                      @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+                                                      @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
 
         return null;
     }
