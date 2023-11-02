@@ -2,6 +2,7 @@ package com.reachout.backend.exception;
 
 import com.reachout.backend.payload.ApiResponse;
 import com.reachout.backend.payload.AuthenticationResponse;
+import com.reachout.backend.payload.SimpleResponse;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -12,6 +13,12 @@ public class BadRequestException extends RuntimeException {
 
     private ApiResponse apiResponse;
     private AuthenticationResponse authenticationResponse;
+    private SimpleResponse simpleResponse;
+
+    public BadRequestException(SimpleResponse simpleResponse) {
+        super();
+        this.simpleResponse = simpleResponse;
+    }
 
     public BadRequestException(ApiResponse apiResponse) {
         super();

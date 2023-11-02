@@ -7,10 +7,11 @@
 //
 //@Configuration
 //@EnableWebSecurity
-//public class Webconfig implements WebMvcConfigurer {
+//public class WebConfig implements WebMvcConfigurer {
 //    @Override
 //    public void addCorsMappings(CorsRegistry registry) {
 //        registry.addMapping("/**")
-//                .allowedOrigins("*").allowedHeaders("*").allowedMethods("GET", "POST", "PUT", "DELETE");
+//                .allowCredentials(true)
+//                .allowedOrigins("http://localhot:3000").allowedHeaders("*").allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
 //    }
 //}

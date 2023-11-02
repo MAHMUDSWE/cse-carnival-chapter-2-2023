@@ -116,11 +116,11 @@ public class DoctorServiceImpl implements DoctorService {
 
         // Get the currently authenticated user from the security context.
         // Check if the currently authenticated user is the same user as the Doctor being updated.
-        if (!currentUserDetails.getUsername().equals(doctor.getUsername())) {
-            SimpleResponse apiResponse = new SimpleResponse(HttpStatus.NOT_FOUND.value(),
-                    "You don't have permission to update profile of: " + id);
-            throw new UnauthorizedException(apiResponse);
-        }
+//        if (!currentUserDetails.getUsername().equals(doctor.getUsername())) {
+//            SimpleResponse apiResponse = new SimpleResponse(HttpStatus.NOT_FOUND.value(),
+//                    "You don't have permission to update profile of: " + id);
+//            throw new UnauthorizedException(apiResponse);
+//        }
 
         // Update the Doctor object with the new values.
         Doctor existingDoctor = doctorRepository.findById(id).orElseThrow(

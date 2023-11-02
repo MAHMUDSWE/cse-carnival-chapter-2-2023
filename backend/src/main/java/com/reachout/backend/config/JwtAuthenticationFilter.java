@@ -1,6 +1,7 @@
 package com.reachout.backend.config;
 
 import com.reachout.backend.security.CustomUserDetailsService;
+import com.reachout.backend.utils.AppConstants;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -52,6 +53,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String username;
 
         try {
+            // Get the requested URL
+            String requestUrl = request.getRequestURI();
+
+
+
+            if(AppConstants.isWhiteListedURL(requestUrl)) {
+                //implement here
+                //if requested url is WHITE_LIST_URL then don't validate for Jwt token
+                System.out.println("public endpoint...");
+                filterChain.doFilter(request, response);
+                return;
+            }
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 System.out.println("no token found / bearer token not in the header");
                 filterChain.doFilter(request, response);

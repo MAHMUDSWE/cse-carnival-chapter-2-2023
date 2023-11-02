@@ -103,8 +103,8 @@ public class AuthenticationService {
         //user.setEnabled(false);
 
         //assigning to only single role
-        Role role = roleRepository.findByName("PATIENT").
-                orElseThrow(()->new Exception("role PATIENT cannot be fetched from DB"));
+        Role role = roleRepository.findByName("ROLE_PATIENT").
+                orElseThrow(()->new Exception("role ROLE_PATIENT cannot be fetched from DB"));
 
 
         patient.setRole(role);
@@ -123,10 +123,9 @@ public class AuthenticationService {
 
         //check if user exists in DB
         if(checkEmailAndUsername(doctor.getUsername(), doctor.getEmail())) {
-            AuthenticationResponse response = AuthenticationResponse.builder().statusCode(HttpStatus.OK.value()).
+            AuthenticationResponse response = AuthenticationResponse.builder().statusCode(HttpStatus.CONFLICT.value()).
                     message(HttpStatus.CONFLICT.getReasonPhrase()).
                     accessToken("").refreshToken("").build();
-
             throw  new BadRequestException(response);
         }
 

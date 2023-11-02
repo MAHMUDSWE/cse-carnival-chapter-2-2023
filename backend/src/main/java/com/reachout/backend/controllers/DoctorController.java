@@ -43,11 +43,12 @@ public class DoctorController {
 
         return new ResponseEntity< >(apiResponse, HttpStatus.OK);
     }
-
     @PutMapping("/{id}")
+    @CrossOrigin
     public ResponseEntity<Doctor> updateDoctor(@PathVariable(value = "id") Long id, @RequestBody Doctor doctor,
                                           @AuthenticationPrincipal UserDetails currentUserDetails) {
 
+        System.out.println("doctorController : updateDoctor");
         Doctor updatedDoctor = doctorService.updateDoctor(id, doctor, currentUserDetails);
         return new ResponseEntity<>(updatedDoctor, HttpStatus.CREATED);
     }

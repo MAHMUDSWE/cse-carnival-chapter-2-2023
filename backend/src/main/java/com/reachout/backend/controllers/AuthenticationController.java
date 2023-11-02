@@ -7,14 +7,11 @@ import com.reachout.backend.payload.RegistrationDtoPatient;
 import com.reachout.backend.service.AdminService;
 import com.reachout.backend.service.AuthenticationService;
 import com.reachout.backend.service.DoctorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -25,6 +22,7 @@ public class AuthenticationController {
     private final DoctorService doctorService;
     private final AdminService adminService;
 
+    @CrossOrigin
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody LoginDto loginDto) {
 
@@ -33,7 +31,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register/patient")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegistrationDtoPatient registrationDtoUser)
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody @Valid RegistrationDtoPatient registrationDtoUser)
             throws Exception {
         System.out.println("Registration Req: " + registrationDtoUser);
         AuthenticationResponse response = authenticationService.register(registrationDtoUser);
